@@ -1,0 +1,314 @@
+:root {
+    /* ===== Размеры шрифтов ===== */
+    --step--2: clamp(0.833rem, 0.648rem + 0.232vw, 0.88rem);
+    --step--1: clamp(0.833rem, 0.767rem + 0.333vw, 1.1rem);
+    --step-0: clamp(1rem, 0.906rem + 0.469vw, 1.375rem);
+    --step-1: clamp(1.2rem, 1.07rem + 0.648vw, 1.719rem);
+    --step-2: clamp(1.44rem, 1.263rem + 0.886vw, 2.148rem);
+    --step-3: clamp(1.728rem, 1.489rem + 1.197vw, 2.686rem);
+
+    --fs-body: var(--step-0);
+    --fs-button: var(--step--2);
+    --fs-tooltip: var(--step--2);
+    --fs-h1: var(--step-3);
+    --fs-h2: var(--step-0);
+
+    /* ===== Отступы ===== */
+    --space-xs: clamp(0.5rem, 0.4rem + 0.4vw, 1rem);
+    --space-s: clamp(1rem, 0.8rem + 0.6vw, 1.5rem);
+    --space-m: clamp(1.5rem, 1.2rem + 0.8vw, 2rem);
+    --space-l: clamp(2rem, 1.6rem + 1vw, 3rem);
+
+    /* ===== Точки перелома ===== */
+    --bp-mobile: 600px;
+    --bp-tablet: 900px;
+    --bp-desktop: 1250px;
+}
+
+/* ===== Общие настройки ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Comfortaa, sans-serif;
+    font-size: var(--fs-body);
+    color: #2A2A2A;
+}
+
+/* ===== Fonts ===== */
+@font-face {
+    font-family: "Zvezda";
+    src: url("Zvezda NHZDN Bold Italic v.1.1.otf") format("opentype");
+    font-style: italic;
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: "Bulbasaur";
+    src: url("BulbasaurSP.otf") format("opentype");
+}
+
+@font-face {
+    font-family: "Comfortaa";
+    src: url("Comfortaa.ttf") format("truetype");
+}
+
+/* ===== Header ===== */
+.main-header {
+    width: 100%;
+    background-color: #CCA1F7;
+    padding: var(--space-s) var(--space-m);
+}
+
+.header-row {
+    max-width: 1600px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-title {
+    font-family: Zvezda;
+    font-size: var(--fs-h1);
+    font-style: italic;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.header-nav {
+    display: flex;
+    gap: var(--space-l);
+    font-family: Bulbasaur;
+    font-size: var(--fs-body);
+}
+
+.header-nav a {
+    text-decoration: none;
+    color: #2A2A2A;
+}
+
+.header-nav a:hover {
+    color: #77784E;
+}
+
+.profile-inline {
+    display: flex;
+    align-items: center;
+    gap: var(--space-s);
+    font-size: var(--fs-body);
+}
+
+.prof_pic {
+    width: 56px;
+    height: 56px;
+    background-color: #F6F7A1;
+    border-radius: 50%;
+}
+
+/* ===== Main ===== */
+main {
+    max-width: 1600px;
+    margin: var(--space-l) auto;
+    padding: var(--space-s);
+}
+
+.instruct {
+    font-family: Bulbasaur;
+    font-size: var(--fs-h2);
+    margin-bottom: var(--space-s);
+}
+
+/* ===== Форма добавления / редактирования ===== */
+.material-form {
+    background-color: #F6F7A1;
+    border: 2px solid #B7B8A5;
+    border-radius: 32px;
+    padding: var(--space-m);
+    max-width: 1000px;
+    margin: 0 auto var(--space-l) auto;
+}
+
+.material-form label {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-m);
+    font-size: var(--fs-body);
+    color: #2A2A2A;
+}
+
+.material-form input,
+.material-form textarea {
+    font-family: Comfortaa;
+    font-size: var(--fs-body);
+    padding: var(--space-s);
+    border-radius: 18px;
+    border: 2px solid #B7B8A5;
+    background-color: #fff;
+    color: #2A2A2A;
+}
+
+.material-form textarea {
+    resize: vertical;
+    min-height: 200px;
+}
+
+.material-form input:focus,
+.material-form textarea:focus {
+    outline: none;
+    border-color: #CCA1F7;
+}
+
+/* ===== Action Bar ===== */
+.action-bar-compact {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-s);
+    padding: var(--space-s) var(--space-m);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    max-width: 90%;
+    min-width: 300px;
+    margin: var(--space-s) auto;
+    justify-content: center;
+}
+
+.action-btn {
+    width: 44px;
+    height: 44px;
+}
+
+.action-btn svg {
+    width: 22px;
+    height: 22px;
+}
+
+.action-btn:hover {
+    transform: translateY(-4px);
+    background: rgba(0,0,0,0.05);
+}
+
+.action-btn .tooltip {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    bottom: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #2A2A2A;
+    color: #F6F7A1;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: var(--fs-tooltip);
+    white-space: nowrap;
+}
+
+.action-btn:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+.action-btn.danger svg {
+    stroke: #e04b4b;
+}
+
+/* ===== Ссылки ===== */
+a {
+    color: #9485A2;
+}
+
+a:hover {
+    color: #CCA1F7;
+}
+
+/* ===== Материал ===== */
+.material-text {
+    font-size: var(--fs-body);
+    max-height: 150px;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    padding: var(--space-xs);
+    border-radius: 12px;
+    background-color: #F6F7A1;
+    border: 1px solid #ccc;
+}
+
+.material-text.expanded {
+    max-height: 1000px;
+}
+
+.toggle-btn {
+    margin-top: var(--space-xs);
+    padding: 6px 12px;
+    font-family: Comfortaa;
+    font-size: var(--fs-button);
+    background-color: #CCA1F7;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background 0.25s ease;
+}
+
+.toggle-btn:hover {
+    background-color: #b38de0;
+}
+
+/* ===== Адаптивность ===== */
+@media (max-width: var(--bp-tablet)) {
+    .action-bar-compact {
+        padding: var(--space-s);
+        gap: var(--space-s);
+    }
+
+    .action-btn {
+        width: 38px;
+        height: 38px;
+    }
+
+    .action-btn svg {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+@media (max-width: var(--bp-mobile)) {
+    .action-bar-compact {
+        gap: var(--space-xs);
+        padding: 8px 12px;
+    }
+
+    .action-btn {
+        width: 32px;
+        height: 32px;
+    }
+
+    .action-btn svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .tooltip {
+        display: none;
+    }
+
+    .material-text {
+        font-size: var(--fs-body);
+    }
+
+    .material-form input,
+    .material-form textarea {
+        font-size: var(--fs-body);
+        padding: var(--space-s);
+    }
+
+    .instruct {
+        font-size: var(--fs-h2);
+    }
+}
