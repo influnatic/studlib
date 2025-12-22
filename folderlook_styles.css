@@ -1,0 +1,302 @@
+.header_toolbar{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /*border: 1px solid #7a7574;*/
+    font-size: 20px;
+    width: 100%; 
+    font-family: Bulbasaur;
+    color: #2a2a2a;
+}
+
+header{
+    /*border: 1px solid #7a7574;*/
+    display: flex;
+    flex-direction: column;   
+    align-items: center;     
+    width: 100%; 
+    background-color: hsla(271, 13%, 58%, 0.401);
+}
+
+.prof_pic{
+    background-color: #2a2a2a;
+    border-radius: 100%;
+    width: 60px;
+    height: 60px;
+}
+
+.logo{
+    font-family: Zvezda;
+    font-size: 80px;
+    text-align: center;
+    color: #2a2a2a;
+}
+
+.nav{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.nav a{
+    font-family: Bulbasaur;
+    font-size: 20px;
+    text-decoration: none;
+    color: #2a2a2a;
+}
+
+.nav a:hover{
+    color: #B98AEF;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Скрываем чекбокс */
+.dropdown-checkbox {
+    display: none;
+}
+
+/* Стиль для label (как кнопка) */
+.dropdown-toggle {
+    display: inline-block;
+    cursor: pointer;
+    padding: 0;
+    font-family: inherit;
+}
+
+.dropdown-toggle:hover {
+    color: #B98AEF;
+}
+
+/* Меню скрыто по умолчанию */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    min-width: 180px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+    border-radius: 8px;
+    padding: 12px 0;
+    z-index: 1000;
+    margin: 0;
+    list-style: none;
+}
+
+/* Показываем при checked чекбокса */
+.dropdown-checkbox:checked + .dropdown-toggle + .dropdown-menu {
+    display: block;
+}
+
+
+.dropdown-checkbox:checked {
+    color: #B98AEF;; 
+}
+
+/* Стили для ссылок в меню */
+.dropdown-menu a {
+    display: block;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #2a2a2a;
+    font-size: 20px;
+}
+
+
+/*Динамический просмотр папок и материалов*/
+/* Сетка папок — круглые иконки */
+.folders-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-bottom: 60px;
+}
+
+.folder-circle {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    position: relative;
+    transition: transform 0.2s;
+}
+
+.folder-circle:hover {
+    transform: scale(1.1);
+}
+
+
+/* Сетка материалов — карточки */
+.materials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+.material-card {
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: transform 0.2s;
+}
+
+.material-card:hover {
+    transform: translateY(-5px);
+}
+
+.material-card h3 {
+    margin: 0 0 10px 0;
+    color: #2A2A2A;
+    font-family: Bulbasaur;
+    font-size: 20px;
+}
+
+.material-card p, .material-card a {
+    color: #2A2A2A;
+    font-family: Comfortaa;
+    font-size: 18px;
+}
+
+
+.view-link {
+    display: inline-block;
+    background: white;
+    color: #2A2A2A;
+    padding: 8px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.view-link:hover {
+    background: #eee;
+}
+
+/* Общие стили */
+
+h2 {
+    font-family: Bulbasaur;
+    font-size: 32px;
+    color: #2A2A2A;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.folder-section {
+    margin-bottom: 60px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid #eee;
+}
+
+.folder-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+    gap: 20px;
+}
+
+.folder-icon {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #CCA1F7; /* будет переопределяться inline */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.folder-title {
+    font-family: Zvezda;
+    font-size: 30px;
+    font-weight: bold;
+    color: #2A2A2A;
+    flex-grow: 1;
+}
+
+.open-folder-btn {
+    font-family: Comfortaa;
+    background: #CCA1F7;
+    color: #2a2a2a;
+    padding: 12px;
+    border-radius: 14px;
+    text-decoration: none;
+    font-size: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+
+.open-folder-btn:hover {
+    background: #B98AEF;
+}
+
+.materials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+.material-card {
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.empty-folder {
+    font-family: Comfortaa;
+    text-align: center;
+    padding: 60px 20px;
+    color: #2a2a2a;
+    font-size: 20px;
+}
+
+main {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.empty_message{
+    font-family: Comfortaa;
+    text-align: center;
+    font-size: 20px;
+    color: #2a2a2a;
+
+}
+
+@font-face {
+    font-family: "Zvezda";
+    src: url("Zvezda NHZDN Bold Italic v.1.1.otf") format("opentype");
+    font-style: italic;
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: "Bulbasaur";
+     src: url("BulbasaurSP.otf") format("opentype");
+    font-style: normal;
+    font-weight: normal;
+}
+
+
+@font-face{
+    font-family: "Comfortaa";
+    src: url("Comfortaa.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
