@@ -18,18 +18,18 @@ require 'folder_edit_logic.php';
             <a href="finder.php">Поиск</a>
             <a href="folder_look.php">Материалы</a>
             <div class="dropdown">
-                <!-- Скрытый чекбокс -->
-                <input type="checkbox" id="add-dropdown" class="dropdown-checkbox">
-                <!-- Кнопка как label для чекбокса -->
-                <label for="add-dropdown" class="dropdown-toggle">
-                    Создать
-                </label>
-                <!-- Меню -->
-                <ul class="dropdown-menu">
-                    <li><a href="#">Создать папку</a></li>
-                    <li><a href="#">Создать документ</a></li>
-                </ul>
-            </div>
+                            <!-- Скрытый чекбокс -->
+                            <input type="checkbox" id="add-dropdown" class="dropdown-checkbox">
+                            <!-- Кнопка как label для чекбокса -->
+                            <label for="add-dropdown" class="dropdown-toggle">
+                                Создать
+                            </label>
+                            <!-- Меню -->
+                            <ul class="dropdown-menu">
+                                <li><a href="folder_add.php">Создать папку</a></li>
+                                <li><a href="material_add.php">Создать документ</a></li>
+                            </ul>
+                        </div>
             <a href="https://web.telegram.org/k/">Чат-бот</a>
 
         </nav>
@@ -56,8 +56,8 @@ require 'folder_edit_logic.php';
                     </label>
                     <!-- Меню -->
                     <ul class="dropdown-menu">
-                        <li><a href="#">Создать папку</a></li>
-                        <li><a href="#">Создать документ</a></li>
+                        <li><a href="folder_add.php">Создать папку</a></li>
+                        <li><a href="material_add.php">Создать документ</a></li>
                     </ul>
                 </div>
 

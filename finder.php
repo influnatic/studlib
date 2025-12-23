@@ -25,8 +25,8 @@ require 'finder_logic.php';
                             </label>
                             <!-- Меню -->
                             <ul class="dropdown-menu">
-                                <li><a href="#">Создать папку</a></li>
-                                <li><a href="#">Создать документ</a></li>
+                                <li><a href="folder_add.php">Создать папку</a></li>
+                                <li><a href="material_add.php">Создать документ</a></li>
                             </ul>
                         </div>
             <a href="https://web.telegram.org/k/">Чат-бот</a>
@@ -55,8 +55,8 @@ require 'finder_logic.php';
                     </label>
                     <!-- Меню -->
                     <ul class="dropdown-menu">
-                        <li><a href="#">Создать папку</a></li>
-                        <li><a href="#">Создать документ</a></li>
+                        <li><a href="folder_add.php">Создать папку</a></li>
+                        <li><a href="material_add.php">Создать документ</a></li>
                     </ul>
                 </div>
 
