@@ -10,31 +10,61 @@ require 'folder_look_logic.php';
     <link rel="stylesheet" href="folderlook_styles.css">
 </head>
 <body>
-<header>
-    <div class="logo">StudLib</div>
-    <div class="header_toolbar">
-        <div class="prof_pic"></div>
-    <div class="nav">
-        <a href="folder_look.php">Мои материалы</a>
-            <!-- Кнопка с dropdown -->
-        <div class="dropdown">
-        <!-- Скрытый чекбокс -->
-        <input type="checkbox" id="add-dropdown" class="dropdown-checkbox">
-        <!-- Кнопка как label для чекбокса -->
-        <label for="add-dropdown" class="dropdown-toggle">
-            Добавить
-        </label>
-        <!-- Меню -->
-        <ul class="dropdown-menu">
-            <li><a href="#">Добавить папку</a></li>
-            <li><a href="#">Добавить документ</a></li>
-        </ul>
-        </div>
+
+
+<header class="main-header">
+    <div class="header-row">
+        <div class="header-title">StudLib</div>
+        <nav class="header-nav">
             <a href="finder.php">Поиск</a>
-            <a href="https://web.telegram.org/k/">Перейти в чат</a>
-    </div>
+            <a href="folder_look.php">Материалы</a>
+            <div class="dropdown">
+                            <!-- Скрытый чекбокс -->
+                            <input type="checkbox" id="add-dropdown" class="dropdown-checkbox">
+                            <!-- Кнопка как label для чекбокса -->
+                            <label for="add-dropdown" class="dropdown-toggle">
+                                Создать
+                            </label>
+                            <!-- Меню -->
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Создать папку</a></li>
+                                <li><a href="#">Создать документ</a></li>
+                            </ul>
+                        </div>
+            <a href="https://web.telegram.org/k/">Чат-бот</a>
+
+        </nav>
+
+        <div class="profile-inline">
+            <div class="prof_pic"></div>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
     </div>
 
+    <div class="mobile-nav" id="mobileNav">
+        <a href="finder.php">Поиск</a>
+        <a href="folder_look.php">Материалы</a>
+        <div class="dropdown">
+                    <!-- Скрытый чекбокс -->
+                    <input type="checkbox" id="add-dropdown" class="dropdown-checkbox">
+                    <!-- Кнопка как label для чекбокса -->
+                    <label for="add-dropdown" class="dropdown-toggle">
+                        Создать
+                    </label>
+                    <!-- Меню -->
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Создать папку</a></li>
+                        <li><a href="#">Создать документ</a></li>
+                    </ul>
+                </div>
+
+        <a href="https://web.telegram.org/k/">Чат-бот</a>
+
+    </div>
 </header>
 <main>
 <?php foreach ($folders as $folder):
@@ -75,5 +105,24 @@ require 'folder_look_logic.php';
         <p class="empty_message">У вас пока нет папок. Добавьте первую!</p>
     <?php endif; ?>
 </main>
+<script>
+    const toggleBtn = document.getElementById('toggleBtn');
+    const materialText = document.getElementById('materialText');
+
+    toggleBtn.addEventListener('click', () => {
+        materialText.classList.toggle('expanded');
+
+        toggleBtn.textContent = materialText.classList.contains('expanded') ? 'Свернуть' : 'Развернуть';
+    });
+
+    const hamburger = document.getElementById('hamburger');
+    const mobileNav = document.getElementById('mobileNav');
+
+    hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        mobileNav.classList.toggle('show');
+    });
+</script>
 </body>
+
 </html>
