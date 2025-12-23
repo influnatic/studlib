@@ -1,54 +1,155 @@
-.header_toolbar{
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* ===== Размеры шрифтов через clamp ===== */
+    --fs-body: clamp(20px, 2vw, 36px);
+    --fs-h1: clamp(36px, 4vw, 64px);
+    --fs-h2: clamp(28px, 3.5vw, 48px);
+    --fs-label: clamp(20px, 2.2vw, 32px);
+    --fs-btn: clamp(16px, 1.8vw, 24px);
+    --fs-tooltip: clamp(14px, 1.5vw, 18px);
+
+    /* ===== Отступы ===== */
+    --space-xs: clamp(4px, 1vw, 8px);
+    --space-s: clamp(8px, 1.5vw, 16px);
+    --space-m: clamp(12px, 2vw, 24px);
+    --space-l: clamp(20px, 3vw, 40px);
+
+    /* ===== Точки перелома ===== */
+    --bp-mobile: 600px;
+    --bp-tablet: 850px;
+    --bp-desktop: 1250px;
+}
+
+/* викин хедер*/
+body {
+    font-family: Comfortaa, sans-serif;
+    font-size: var(--fs-body);
+    color: #2A2A2A;
+}
+
+.main-header {
+    width: 100%;
+    background-color: #CCA1F7;
+    padding: var(--space-s) var(--space-l);
+}
+
+.header-row {
+    max-width: 1600px;
+    width: 90%;
+    margin: 0 auto;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    /*border: 1px solid #7a7574;*/
-    font-size: 20px;
-    width: 100%;
-    font-family: Bulbasaur;
-    color: #2a2a2a;
+    gap: var(--space-s);
 }
 
-header{
-    /*border: 1px solid #7a7574;*/
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    background-color: hsla(271, 13%, 58%, 0.401);
-}
-
-.prof_pic{
-    background-color: #2a2a2a;
-    border-radius: 100%;
-    width: 60px;
-    height: 60px;
-}
-
-.logo{
+.header-title {
     font-family: Zvezda;
-    font-size: 80px;
-    text-align: center;
-    color: #2a2a2a;
+    font-size: var(--fs-h1);
+    font-style: italic;
+    font-weight: bold;
+    white-space: nowrap;
 }
 
-.nav{
+.header-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-m);
+    font-family: Bulbasaur;
+    font-size: var(--fs-body);
+}
+
+.header-nav a {
+    text-decoration: none;
+    color: #2A2A2A;
+}
+
+.header-nav a:hover {
+    color: #77784E;
+}
+
+.profile-inline {
     display: flex;
     align-items: center;
+    gap: var(--space-s);
+    font-size: var(--fs-btn);
+}
+
+.prof_pic {
+    width: clamp(40px, 5vw, 56px);
+    height: clamp(40px, 5vw, 56px);
+    background-color: #F6F7A1;
+    border-radius: 50%;
+}
+
+/* ===== Гамбургер ===== */
+.hamburger {
+    display: none; /* по умолчанию скрыт */
+    flex-direction: column;
     justify-content: space-between;
-    gap: 20px;
+    width: 30px;
+    height: 22px;
+    cursor: pointer;
 }
 
-.nav a{
+.hamburger span {
+    display: block;
+    height: 4px;
+    width: 100%;
+    background-color: #2A2A2A;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+/* ===== Анимация гамбургера в крестик ===== */
+.hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* ===== Мобильное меню ===== */
+.mobile-nav {
+    display: none;
+    flex-direction: column;
+    gap: var(--space-s);
+    background-color: #CCA1F7;
+    padding: var(--space-s);
+    width: 100%;
+    text-align: center;
+    max-height: 0;
+    overflow: visible;
+    transition: max-height 0.3s ease;
+}
+
+.mobile-nav.show {
+    display: flex;
+    max-height: 500px; /* достаточно для всех пунктов */
+}
+
+.mobile-nav a {
     font-family: Bulbasaur;
-    font-size: 20px;
+    font-size: var(--fs-body);
+    color: #2A2A2A;
     text-decoration: none;
-    color: #2a2a2a;
 }
 
-.nav a:hover{
-    color: #B98AEF;
+.mobile-nav a:hover {
+    color: #77784E;
 }
+/*викин хедер*/
 
 .dropdown {
     position: relative;
@@ -65,11 +166,11 @@ header{
     display: inline-block;
     cursor: pointer;
     padding: 0;
-    font-family: inherit;
+    font-family: Bulbasaur;
 }
 
 .dropdown-toggle:hover {
-    color: #B98AEF;
+    color: #77784E;
 }
 
 /* Меню скрыто по умолчанию */
@@ -187,7 +288,7 @@ header{
     position: absolute;
     top: 100%;
     left: 50%;
-    transform: translateX(-70%);
+    transform: translateX(-50%);
     background-color: white;
     min-width: 320px;
     box-shadow: 0 8px 16px rgba(0,0,0,0.15);
@@ -223,10 +324,13 @@ header{
 }
 
 .buttons{
+
+    text-align: center;
+    margin: 40px;
     display: flex;
     align-items: center;
     justify-content: right;
-    gap: 10px;
+    gap: 20px;
 }
 
 .materials-grid {
@@ -237,11 +341,16 @@ header{
 }
 
 .material-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     border-radius: 12px;
     padding: 20px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     text-align: center;
     transition: transform 0.2s;
+    overflow-wrap: break-word;
+    hyphens: auto;
 }
 
 .material-card:hover {
@@ -282,9 +391,10 @@ header{
 }
 
 main {
-    max-width: 1200px;
-    margin: 40px auto;
-    padding: 0 20px;
+    max-width: 1600px;
+    width: 90%;
+    margin: var(--space-l) auto;
+    padding: var(--space-m);
 }
 
 @font-face {
@@ -307,4 +417,25 @@ main {
     src: url("Comfortaa.ttf") format("truetype");
     font-style: normal;
     font-weight: normal;
+}
+@media (max-width: 850px) {
+    .header-row { gap: var(--space-s); justify-content: center; }
+    .header-nav { font-size: clamp(18px, 3vw, 28px); gap: var(--space-s); }
+    .profile-inline { font-size: clamp(16px, 2.5vw, 24px); gap: var(--space-s); }
+    .instruct { font-size: clamp(28px, 4vw, 42px); }
+    .buttons { flex-direction: column; }
+
+}
+
+@media (max-width: 600px) {
+    .header-nav { flex-direction: column; gap: var(--space-xs); }
+    .header-title { text-align: center; width: 100%; }
+    .buttons { flex-direction: column; }
+
+}
+
+@media (max-width: 860px) {
+    .header-nav { display: none; }
+    .hamburger { display: flex; }
+    .buttons { flex-direction: column; }
 }

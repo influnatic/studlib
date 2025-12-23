@@ -6,8 +6,9 @@ require 'folder_look_logic.php';
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Главная</title>
-    <link rel="stylesheet" href="folderlook_styles.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
@@ -50,9 +51,9 @@ require 'folder_look_logic.php';
         <a href="folder_look.php">Материалы</a>
         <div class="dropdown">
                     <!-- Скрытый чекбокс -->
-                    <input type="checkbox" id="add-dropdown" class="dropdown-checkbox">
+                    <input type="checkbox" id="add-dropdown-mobile" class="dropdown-checkbox">
                     <!-- Кнопка как label для чекбокса -->
-                    <label for="add-dropdown" class="dropdown-toggle">
+                    <label for="add-dropdown-mobile" class="dropdown-toggle">
                         Создать
                     </label>
                     <!-- Меню -->
@@ -89,7 +90,7 @@ require 'folder_look_logic.php';
                         <h3><?php echo htmlspecialchars($mat['name']); ?></h3>
                         <p>Тип: <?php echo htmlspecialchars($mat['type_name'] ?? 'Не указан'); ?></p>
                         <p>Теги: <?php echo htmlspecialchars($mat['tags']); ?></p>
-                        <a href="<?php echo htmlspecialchars($mat['path']); ?>" target="_blank" class="view-link">Просмотреть</a>
+                        <a href="material_view.php?id=<?php echo $mat['id']; ?>" class="view-link">Просмотреть</a>
                     </div>
                 <?php endforeach; ?>
             </div>
@@ -106,14 +107,6 @@ require 'folder_look_logic.php';
     <?php endif; ?>
 </main>
 <script>
-    const toggleBtn = document.getElementById('toggleBtn');
-    const materialText = document.getElementById('materialText');
-
-    toggleBtn.addEventListener('click', () => {
-        materialText.classList.toggle('expanded');
-
-        toggleBtn.textContent = materialText.classList.contains('expanded') ? 'Свернуть' : 'Развернуть';
-    });
 
     const hamburger = document.getElementById('hamburger');
     const mobileNav = document.getElementById('mobileNav');
