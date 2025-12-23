@@ -1,20 +1,20 @@
 <?php
-// ===== Временные данные материала (позже будет БД) =====
-$material = [
-        'id' => 1,
-        'title' => 'Конспект по математике',
-        'subject' => 'Математика',
-        'topic' => 'Производные',
-        'tags' => 'анализ, производная, экзамен',
-        'content' => 'Здесь может отображаться текст конспекта или расшифровка аудио.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-Vivamus lacinia odio vitae vestibulum vestibulum. Cras venenatis euismod malesuada.
-Дополнительно можно вставлять параграфы и форматированный текст.'
-];
+require 'db.php'; // подключение к БД
+
+$id = isset($_GET['id']) ? (int)$_GET['id'] : 1; // по умолчанию 1
+
+$stmt = $pdo->prepare("SELECT * FROM materials WHERE id = ?");
+$stmt->execute([$id]);
+$material = $stmt->fetch();
+
+if (!$material) {
+    die("Материал не найден");
+}
 
 $show_success = isset($_GET['success']) && $_GET['success'] == 1;
-
 ?>
+
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -30,17 +30,28 @@ $show_success = isset($_GET['success']) && $_GET['success'] == 1;
         <div class="header-title">StudLib</div>
 
         <nav class="header-nav">
+            <a href="#">Главная</a>
             <a href="#">Материалы</a>
-            <a href="#">Чат-бот</a>
-            <a href="#">Поиск</a>
+            <a href="#">Контакты</a>
         </nav>
 
         <div class="profile-inline">
             <div class="prof_pic"></div>
-            <span class="profile-name">Alex</span>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </div>
     </div>
+
+    <div class="mobile-nav" id="mobileNav">
+        <a href="#">Главная</a>
+        <a href="#">Материалы</a>
+        <a href="#">Контакты</a>
+    </div>
 </header>
+
 
 <main>
     <?php if ($show_success): ?>
@@ -124,6 +135,14 @@ $show_success = isset($_GET['success']) && $_GET['success'] == 1;
         materialText.classList.toggle('expanded');
 
         toggleBtn.textContent = materialText.classList.contains('expanded') ? 'Свернуть' : 'Развернуть';
+    });
+
+    const hamburger = document.getElementById('hamburger');
+    const mobileNav = document.getElementById('mobileNav');
+
+    hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        mobileNav.classList.toggle('show');
     });
 </script>
 

@@ -1,30 +1,40 @@
 <?php
-/* Имитация старых данных */
-$old_title = 'Конспект по математике';
-$old_subject = 'Математика';
-$old_topic = 'Производные';
-$old_tags = 'анализ, производная, экзамен';
-$old_content = 'Здесь может отображаться текст конспекта или расшифровка аудио.';
+require_once 'db.php'; // Подключение к БД
 
-/* Обработка формы */
+// Получаем ID материала из GET-параметра
+$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
+if ($id <= 0) {
+    die("Неверный ID материала.");
+}
+
+// Получаем данные материала из базы
+$stmt = $pdo->prepare("SELECT * FROM materials WHERE id = ?");
+$stmt->execute([$id]);
+$material = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if (!$material) {
+    die("Материал не найден.");
+}
+
+// Обработка формы обновления
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $title = $_POST['title'] ?? '';
+    $subject = $_POST['subject'] ?? '';
+    $topic = $_POST['topic'] ?? '';
+    $tags = $_POST['tags'] ?? '';
+    $content = $_POST['content'] ?? '';
 
-    $title = trim($_POST['title'] ?? '');
-    $subject = trim($_POST['subject'] ?? '');
-    $topic = trim($_POST['topic'] ?? '');
-    $tags = trim($_POST['tags'] ?? '');
-    $content = trim($_POST['content'] ?? '');
+    // Обновляем запись в БД
+    $update = $pdo->prepare("
+        UPDATE materials SET
+            title = ?, subject = ?, topic = ?, tags = ?, content = ?
+        WHERE id = ?
+    ");
+    $update->execute([$title, $subject, $topic, $tags, $content, $id]);
 
-    $title = $title !== '' ? $title : $old_title;
-    $subject = $subject !== '' ? $subject : $old_subject;
-    $topic = $topic !== '' ? $topic : $old_topic;
-    $tags = $tags !== '' ? $tags : $old_tags;
-    $content = $content !== '' ? $content : $old_content;
-
-    // 🔜 Здесь будет UPDATE в БД
-
-    // После "сохранения" — редирект на просмотр материала
-    header("Location: material_view.php?success=1");
+    // Перенаправляем обратно на просмотр с сообщением об успехе
+    header("Location: material_view.php?id=$id&success=1");
     exit;
 }
 ?>
@@ -41,15 +51,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <header class="main-header">
     <div class="header-row">
         <div class="header-title">StudLib</div>
+
         <nav class="header-nav">
+            <a href="#">Главная</a>
             <a href="#">Материалы</a>
-            <a href="#">Чат-бот</a>
-            <a href="#">Поиск</a>
+            <a href="#">Контакты</a>
         </nav>
+
         <div class="profile-inline">
             <div class="prof_pic"></div>
-            <span class="profile-name">Alex</span>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </div>
+    </div>
+
+    <div class="mobile-nav" id="mobileNav">
+        <a href="#">Главная</a>
+        <a href="#">Материалы</a>
+        <a href="#">Контакты</a>
     </div>
 </header>
 
@@ -60,35 +82,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <section>
             <label>
                 <strong>Название</strong><br>
-                <input type="text" name="title" value="<?= htmlspecialchars($old_title) ?>">
+                <input type="text" name="title" value="<?= htmlspecialchars($material['title']) ?>">
             </label>
         </section>
 
         <section>
             <label>
                 <strong>Предмет</strong><br>
-                <input type="text" name="subject" value="<?= htmlspecialchars($old_subject) ?>">
+                <input type="text" name="subject" value="<?= htmlspecialchars($material['subject']) ?>">
             </label>
         </section>
 
         <section>
             <label>
                 <strong>Тема</strong><br>
-                <input type="text" name="topic" value="<?= htmlspecialchars($old_topic) ?>">
+                <input type="text" name="topic" value="<?= htmlspecialchars($material['topic']) ?>">
             </label>
         </section>
 
         <section>
             <label>
                 <strong>Теги</strong><br>
-                <input type="text" name="tags" value="<?= htmlspecialchars($old_tags) ?>">
+                <input type="text" name="tags" value="<?= htmlspecialchars($material['tags']) ?>">
             </label>
         </section>
 
         <section>
             <label>
                 <strong>Материал</strong><br>
-                <textarea name="content" rows="6"><?= htmlspecialchars($old_content) ?></textarea>
+                <textarea name="content" rows="6"><?= htmlspecialchars($material['content']) ?></textarea>
             </label>
         </section>
 
@@ -117,6 +139,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </form>
 </main>
+<script>
+    const hamburger = document.getElementById('hamburger');
+    const mobileNav = document.getElementById('mobileNav');
 
+    hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        mobileNav.classList.toggle('show');
+    });
+</script>
 </body>
 </html>
