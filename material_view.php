@@ -51,9 +51,9 @@ $nextId = $next['id'] ?? null;
         <div class="header-title">StudLib</div>
 
         <nav class="header-nav">
-            <a href="#">Поиск</a>
-            <a href="#">Материалы</a>
-            <a href="#">Создать</a>
+            <a href="finder.php">Поиск</a>
+            <a href="folder_look.php">Материалы</a>
+            <a href="material_add.php">Создать</a>
             <a href="#">Чат-бот</a>
         </nav>
 
@@ -77,7 +77,7 @@ $nextId = $next['id'] ?? null;
 
 <main>
     <div style="margin-bottom:10px; font-size: smaller; margin-top: 0">
-        <a href="folders.php" class="back-btn lift">
+        <a href="folder_look.php" class="back-btn lift">
             ← Назад к папкам
         </a>
     </div>
