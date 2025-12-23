@@ -7,7 +7,7 @@ require 'finder_logic.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Поиск</title>
-    <link rel="stylesheet" href="finder_styles.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <header class="main-header">
@@ -86,10 +86,10 @@ require 'finder_logic.php';
                 $color = rand(0,1) ? '#CCA1F7' : '#F6F7A1';
             ?>
                 <div class="search-folder-section">
-                    <div class="search-folder-header">
-                        <div class="search-folder-icon" style="background-color: <?php echo $color; ?>"></div>
-                        <div class="search-folder-title"><?php echo htmlspecialchars($folder['name']); ?></div>
-                        <a href="folder_view.php?id=<?php echo $folder['id']; ?>" class="search-open-btn">Открыть папку</a>
+                    <div class="folder-header">
+                        <div class="folder-icon" style="background-color: <?php echo $color; ?>"></div>
+                        <div class="folder-title"><?php echo htmlspecialchars($folder['name']); ?></div>
+                        <a href="folder_view.php?id=<?php echo $folder['id']; ?>" class="open-folder-btn">Открыть папку</a>
                     </div>
                     <?php if ($folder['tags']): ?>
                         <p>Теги: <?php echo htmlspecialchars($folder['tags']); ?></p>

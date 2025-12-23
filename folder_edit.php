@@ -8,7 +8,7 @@ require 'folder_edit_logic.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($folder['name']); ?> — StudLib</title>
-    <link rel="stylesheet" href="folderedit_styles.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <header class="main-header">
