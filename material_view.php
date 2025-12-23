@@ -1,17 +1,38 @@
 <?php
-require 'db.php'; // подключение к БД
+require 'db.php';
 
-$id = isset($_GET['id']) ? (int)$_GET['id'] : 1; // по умолчанию 1
+// Получаем ID материала из GET
+$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+if ($id <= 0) die("Неверный ID материала");
 
+// Получаем текущий материал
 $stmt = $pdo->prepare("SELECT * FROM materials WHERE id = ?");
 $stmt->execute([$id]);
-$material = $stmt->fetch();
+$material = $stmt->fetch(PDO::FETCH_ASSOC);
+if (!$material) die("Материал не найден");
 
-if (!$material) {
-    die("Материал не найден");
-}
+// Предположим, что у пользователя есть ID (например, user_id = 1)
+$userId = $material['user_id'] ?? 1;
 
-$show_success = isset($_GET['success']) && $_GET['success'] == 1;
+// Получаем ID предыдущего материала (меньше текущего ID)
+$prevStmt = $pdo->prepare("
+    SELECT id FROM materials 
+    WHERE user_id = ? AND id < ? 
+    ORDER BY id DESC LIMIT 1
+");
+$prevStmt->execute([$userId, $id]);
+$previous = $prevStmt->fetch(PDO::FETCH_ASSOC);
+$previousId = $previous['id'] ?? null;
+
+// Получаем ID следующего материала (больше текущего ID)
+$nextStmt = $pdo->prepare("
+    SELECT id FROM materials 
+    WHERE user_id = ? AND id > ? 
+    ORDER BY id ASC LIMIT 1
+");
+$nextStmt->execute([$userId, $id]);
+$next = $nextStmt->fetch(PDO::FETCH_ASSOC);
+$nextId = $next['id'] ?? null;
 ?>
 
 
@@ -30,9 +51,10 @@ $show_success = isset($_GET['success']) && $_GET['success'] == 1;
         <div class="header-title">StudLib</div>
 
         <nav class="header-nav">
-            <a href="#">Главная</a>
+            <a href="#">Поиск</a>
             <a href="#">Материалы</a>
-            <a href="#">Контакты</a>
+            <a href="#">Создать</a>
+            <a href="#">Чат-бот</a>
         </nav>
 
         <div class="profile-inline">
@@ -46,14 +68,20 @@ $show_success = isset($_GET['success']) && $_GET['success'] == 1;
     </div>
 
     <div class="mobile-nav" id="mobileNav">
-        <a href="#">Главная</a>
+        <a href="#">Поиск</a>
         <a href="#">Материалы</a>
-        <a href="#">Контакты</a>
+        <a href="#">Создать</a>
+        <a href="#">Чат-бот</a>
     </div>
 </header>
 
-
 <main>
+    <div style="margin-bottom:10px; font-size: smaller; margin-top: 0">
+        <a href="folders.php" class="back-btn lift">
+            ← Назад к папкам
+        </a>
+    </div>
+
     <?php if ($show_success): ?>
         <p style="color:#77784E; margin-bottom:20px;">
             ✔ Изменения сохранены
@@ -62,21 +90,19 @@ $show_success = isset($_GET['success']) && $_GET['success'] == 1;
 
     <h2 class="instruct">Просмотр учебного материала</h2>
 
-    <!-- Информация -->
     <section>
-        <p><strong>Название:</strong> <?= htmlspecialchars($material['title']) ?></p>
-        <p><strong>Предмет:</strong> <?= htmlspecialchars($material['subject']) ?></p>
-        <p><strong>Тема:</strong> <?= htmlspecialchars($material['topic']) ?></p>
+        <p><strong>Название:</strong> <?= htmlspecialchars($material['name']) ?></p>
+        <p><strong>Папка:</strong> <?= htmlspecialchars($material['folder_name']) ?></p>
+        <p><strong>Формат материала:</strong> <?= htmlspecialchars($material['type_name']) ?></p>
         <p><strong>Теги:</strong> <?= htmlspecialchars($material['tags']) ?></p>
     </section>
 
-    <!-- Материал -->
     <section>
         <br>
         <h3 class="instruct">Материал</h3>
 
         <p>
-            <a href="#">📎 Открыть прикреплённый файл</a>
+            <a href="<?= htmlspecialchars($material['path']) ?>" target="_blank">📎 Открыть прикреплённый файл</a>
         </p>
 
         <div class="detail-item">
@@ -89,10 +115,19 @@ $show_success = isset($_GET['success']) && $_GET['success'] == 1;
         </div>
     </section>
 
-    <!-- ===== Панель действий ===== -->
     <div class="action-bar-compact">
+        <!-- Предыдущий материал -->
+        <form action="material_view.php" method="get">
+            <input type="hidden" name="id" value="<?= $previousId ?? $material['id'] ?>">
+            <button class="action-btn prev" type="submit">
+                <svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z" fill="#0F0F0F"/>
+                </svg>
+                <span class="tooltip">Предыдущий материал</span>
+            </button>
+        </form>
 
-        <!-- Удалить -->
+        <!-- Удаление -->
         <form action="material_delete.php" method="post">
             <input type="hidden" name="id" value="<?= $material['id'] ?>">
             <button class="action-btn danger" type="submit">
@@ -103,7 +138,7 @@ $show_success = isset($_GET['success']) && $_GET['success'] == 1;
             </button>
         </form>
 
-        <!-- Редактировать -->
+        <!-- Редактирование -->
         <form action="material_edit.php" method="get">
             <input type="hidden" name="id" value="<?= $material['id'] ?>">
             <button class="action-btn rotate" type="submit">
@@ -117,29 +152,55 @@ $show_success = isset($_GET['success']) && $_GET['success'] == 1;
         <!-- Добавить -->
         <form action="material_add.php" method="get">
             <button class="action-btn add" type="submit">
-                <svg stroke="currentColor" viewBox="0 0 24 24" fill="none">
-                    <path d="M12 6v6m0 0v6m0-6h6m-6 0H6" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path>
+                <svg width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+
+                                <line fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" x1="12" x2="12" y1="19" y2="5"/>
+
+                                <line fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" x1="5" x2="19" y1="12" y2="12"/>
+
                 </svg>
                 <span class="tooltip">Добавить материал</span>
             </button>
         </form>
 
+
+        <!-- Поделиться -->
+        <button class="action-btn share" onclick="navigator.clipboard.writeText(window.location.href)">
+            <svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 13V17.5C20 20.5577 16 20.5 12 20.5C8 20.5 4 20.5577 4 17.5V13M12 3L12 15M12 3L16 7M12 3L8 7" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="tooltip">Скопировать ссылку</span>
+        </button>
+
+        <!-- Следующий материал -->
+        <form action="material_view.php" method="get">
+            <input type="hidden" name="id" value="<?= $nextId ?? $material['id'] ?>">
+            <button class="action-btn next" type="submit">
+                <svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z" fill="#0F0F0F"/>
+                </svg>
+                <span class="tooltip">Следующий материал</span>
+            </button>
+        </form>
+
+    </div>
+
     </div>
 </main>
 
 <script>
+    // Кнопка "Развернуть/Свернуть"
     const toggleBtn = document.getElementById('toggleBtn');
     const materialText = document.getElementById('materialText');
 
     toggleBtn.addEventListener('click', () => {
         materialText.classList.toggle('expanded');
-
         toggleBtn.textContent = materialText.classList.contains('expanded') ? 'Свернуть' : 'Развернуть';
     });
 
+    // Мобильное меню
     const hamburger = document.getElementById('hamburger');
     const mobileNav = document.getElementById('mobileNav');
-
     hamburger.addEventListener('click', () => {
         hamburger.classList.toggle('active');
         mobileNav.classList.toggle('show');

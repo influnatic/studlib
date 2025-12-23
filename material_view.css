@@ -11,7 +11,7 @@
     --fs-h1: clamp(36px, 4vw, 64px);
     --fs-h2: clamp(28px, 3.5vw, 48px);
     --fs-label: clamp(20px, 2.2vw, 32px);
-    --fs-btn: clamp(16px, 1.8vw, 24px);
+    --fs-btn: clamp(10px, 1.8vw, 18px);
     --fs-tooltip: clamp(14px, 1.5vw, 18px);
 
     /* ===== Отступы ===== */
