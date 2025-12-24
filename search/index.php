@@ -1,7 +1,11 @@
 <?php
 require '../config/db.php';
+require '../config/user_avatar.php';
 session_start();
-$user_id = 1;  // потом $_SESSION['user_id']
+$user_id = $_SESSION['user_id'] ?? 1;  // потом $_SESSION['user_id']
+
+// Получаем аватар пользователя
+$user_avatar = getUserAvatar($pdo, $user_id);
 
 $query = $_GET['tags'] ?? '';
 $search_tags = [];
@@ -38,7 +42,14 @@ if (!empty($search_tags)) {
         ORDER BY m.name
     ");
     $stmt->execute($params);
-    $matching_materials = $stmt->fetchAll();
+    $all_matching_materials = $stmt->fetchAll();
+    
+    // Группируем материалы по folder_id
+    $materials_by_folder = [];
+    foreach ($all_matching_materials as $mat) {
+        $fid = $mat['folder_id'] ?? 0;
+        $materials_by_folder[$fid][] = $mat;
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -50,121 +61,63 @@ if (!empty($search_tags)) {
     <link rel="stylesheet" href="../assets/css/main.css">
 </head>
 <body>
-<header class="main-header">
-    <div class="header-row">
-        <div class="header-title">StudLib</div>
-        <nav class="header-nav">
-            <a href="../search/index.php">Поиск</a>
-            <a href="../folders/list.php">Материалы</a>
-            <div class="dropdown">
-                            <!-- Скрытый чекбокс -->
-                            <input type="checkbox" id="add-dropdown" class="dropdown-checkbox">
-                            <!-- Кнопка как label для чекбокса -->
-                            <label for="add-dropdown" class="dropdown-toggle">
-                                Создать
-                            </label>
-                            <!-- Меню -->
-                            <ul class="dropdown-menu">
-                                <li><a href="../folders/add.php">Создать папку</a></li>
-                                <li><a href="../materials/add.php">Создать документ</a></li>
-                            </ul>
-                        </div>
-            <a href="https://web.telegram.org/k/">Чат-бот</a>
-
-        </nav>
-
-        <div class="profile-inline">
-            <div class="prof_pic"></div>
-            <div class="hamburger" id="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-    </div>
-
-    <div class="mobile-nav" id="mobileNav">
-        <a href="../search/index.php">Поиск</a>
-        <a href="../folders/list.php">Материалы</a>
-        <div class="dropdown">
-                    <!-- Скрытый чекбокс -->
-                    <input type="checkbox" id="add-dropdown-mobile" class="dropdown-checkbox">
-                    <!-- Кнопка как label для чекбокса -->
-                    <label for="add-dropdown-mobile" class="dropdown-toggle">
-                        Создать
-                    </label>
-                    <!-- Меню -->
-                    <ul class="dropdown-menu">
-                        <li><a href="../folders/add.php">Создать папку</a></li>
-                        <li><a href="../materials/add.php">Создать документ</a></li>
-                    </ul>
-                </div>
-
-        <a href="https://web.telegram.org/k/">Чат-бот</a>
-
-    </div>
-</header>
+    <?php require_once __DIR__ . '/../includes/header.php'; ?>
 <main>
-<div class="instruct">Введите теги:</div>
     <form method="GET">
         <input type="text" name="tags" class="search_line" placeholder="Введите #теги через пробел" value="<?php echo htmlspecialchars($query); ?>">
     </form>
 
-    <div class="instruct">Результаты:</div>
-
     <?php if (empty($search_tags)): ?>
-        <div class="no-results">Введите теги для поиска</div>
 
-    <?php elseif (empty($matching_folders) && empty($matching_materials)): ?>
+    <?php elseif (empty($matching_folders) && empty($all_matching_materials)): ?>
         <div class="no-results">Ничего не найдено по запросу: <?php echo htmlspecialchars($query); ?></div>
 
     <?php else: ?>
-        <!-- Сначала все найденные папки -->
-        <?php if (!empty($matching_folders)): ?>
-            <div class="section-title">Найденные папки</div>
-            <?php foreach ($matching_folders as $folder):
-                $color = rand(0,1) ? '#CCA1F7' : '#F6F7A1';
-            ?>
-                <div class="search-folder-section">
+        <!-- Показываем найденные папки с их материалами -->
+        <?php foreach ($matching_folders as $folder): 
+            $folder_mats = $materials_by_folder[$folder['id']] ?? [];
+        ?>
+            <div class="search-folder-section">
+                <div class="folder-section">
                     <div class="folder-header">
-                        <div class="folder-icon" style="background-color: <?php echo $color; ?>"></div>
-                        <div class="folder-title"><?php echo htmlspecialchars($folder['name']); ?></div>
-                        <a href="../folders/view.php?id=<?php echo $folder['id']; ?>" class="open-folder-btn">Открыть папку</a>
+                        <div class="folder-icon">
+                            <?php if (!empty($folder['icon'])): ?>
+                                <img src="../assets/icons/<?php echo htmlspecialchars($folder['icon']); ?>" alt="<?php echo htmlspecialchars($folder['name']); ?>">
+                            <?php endif; ?>
+                        </div>
+                        <div class="folder-info-wrapper">
+                            <div class="folder-title"><?php echo htmlspecialchars($folder['name']); ?></div>
+                            <?php if ($folder['tags']): ?>
+                                <p class="tags_folder_inline">Теги: <?php echo htmlspecialchars($folder['tags']); ?></p>
+                            <?php endif; ?>
+                        </div>
+                        <div class="folder-actions">
+                            <a href="../folders/view.php?id=<?php echo $folder['id']; ?>" class="open-folder-btn">Открыть папку</a>
+                        </div>
                     </div>
-                    <?php if ($folder['tags']): ?>
-                        <p>Теги: <?php echo htmlspecialchars($folder['tags']); ?></p>
-                    <?php endif; ?>
                 </div>
-            <?php endforeach; ?>
-        <?php endif; ?>
 
-        <!-- Затем все найденные материалы -->
-        <?php if (!empty($matching_materials)): ?>
-            <div class="section-title">Найденные материалы</div>
-            <div class="materials-grid">
-                <?php foreach ($matching_materials as $mat):
-                $color = rand(0,1) ? '#CCA1F7' : '#F6F7A1'?>
-                    <div class="material-card" style="background-color: <?php echo $color; ?>">
-                        <h3><?php echo htmlspecialchars($mat['name']); ?></h3>
-                        <p>Тип: <?php echo htmlspecialchars($mat['type_name'] ?? 'Не указан'); ?></p>
-                        <p>Теги: <?php echo htmlspecialchars($mat['tags']); ?></p>
-                        <a href="../materials/view.php?id=<?php echo $mat['id']; ?>" class="view-link">Просмотреть</a>
+                <?php if (!empty($folder_mats)): ?>
+                    <div class="materials-grid">
+                        <?php foreach ($folder_mats as $mat): ?>
+                            <a href="../materials/view.php?id=<?php echo $mat['id']; ?>&return_to=<?php echo urlencode('search/index.php' . ($query ? '?tags=' . urlencode($query) : '')); ?>" class="material-card material-card-yellow">
+                                <h3><?php echo htmlspecialchars($mat['name']); ?></h3>
+                                <p>Тип: <?php echo htmlspecialchars($mat['type_name'] ?? 'Не указан'); ?></p>
+                                <?php if ($mat['tags']): ?>
+                                    <p>Теги: <?php echo htmlspecialchars($mat['tags']); ?></p>
+                                <?php endif; ?>
+                            </a>
+                        <?php endforeach; ?>
                     </div>
-                <?php endforeach; ?>
+                <?php else: ?>
+                    <div class="empty-folder">
+                        В папке пока нет материалов
+                    </div>
+                <?php endif; ?>
             </div>
-        <?php endif; ?>
+        <?php endforeach; ?>
     <?php endif; ?>
 </main>
-<script>
-
-    const hamburger = document.getElementById('hamburger');
-    const mobileNav = document.getElementById('mobileNav');
-
-    hamburger.addEventListener('click', () => {
-        hamburger.classList.toggle('active');
-        mobileNav.classList.toggle('show');
-    });
-</script>
 </body>
 </html>
 

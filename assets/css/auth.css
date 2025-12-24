@@ -30,7 +30,7 @@
             padding:20px; 
             border-radius:15px 15px 0 0; 
             margin:-40px -40px 30px -40px; 
-            color:black; 
+            color:#2A2A2A; 
             font-family: 'BulbasaurSP', cursive; /* Только заголовок — BulbasaurSP */
             font-size:32px; 
         }
@@ -42,11 +42,17 @@
             border-radius:10px; 
             box-sizing:border-box; 
             font-size:16px; 
+            color: #2A2A2A;
+            background-color: #fff;
             font-family: 'Comfortaa', cursive; /* Comfortaa для инпутов */
+        }
+        
+        input::placeholder {
+            color: #666;
         }
         button { 
             background:#d8bfff; 
-            color:black; 
+            color:#2A2A2A; 
             border:none; 
             padding:12px 30px; 
             border-radius:30px; 

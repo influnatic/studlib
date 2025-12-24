@@ -7,8 +7,36 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
+$user_id = $_SESSION['user_id'];
 $display_name = $_SESSION['display_name'] ?? 'User';
-$username = $_SESSION['username'] ?? 'Неизвестно';
+
+// Получаем данные пользователя из БД для отображения текущего аватара
+require_once __DIR__ . '/../config/user_avatar.php';
+$current_avatar = getUserAvatar($pdo, $user_id);
+
+// Получаем список доступных аватаров
+$avatarsDir = '../assets/avatars/';
+$availableAvatars = [];
+if (is_dir($avatarsDir)) {
+    $files = scandir($avatarsDir);
+    foreach ($files as $file) {
+        if (pathinfo($file, PATHINFO_EXTENSION) === 'svg') {
+            $availableAvatars[] = $file;
+        }
+    }
+}
+
+// Обработка сохранения аватара
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_avatar'])) {
+    $new_avatar = trim($_POST['avatar'] ?? '');
+    if ($new_avatar !== '') {
+        $stmt = $pdo->prepare("UPDATE users SET avatar = ? WHERE id = ?");
+        $stmt->execute([$new_avatar, $user_id]);
+        $_SESSION['avatar'] = $new_avatar;
+        header("Location: index.php");
+        exit;
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -17,93 +45,41 @@ $username = $_SESSION['username'] ?? 'Неизвестно';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StudLib — Личный кабинет</title>
-    <link rel="stylesheet" href="../assets/css/materials.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
 </head>
-    <header class="main-header">
-    <div class="header-row">
-        <div class="header-title">StudLib</div>
-        <nav class="header-nav">
-            <a href="../search/index.php">Поиск</a>
-            <a href="../folders/list.php">Материалы</a>
-            <div class="dropdown">
-                <!-- Скрытый чекбокс -->
-                <input type="checkbox" id="add-dropdown" class="dropdown-checkbox">
-                <!-- Кнопка как label для чекбокса -->
-                <label for="add-dropdown" class="dropdown-toggle">
-                    Создать
-                </label>
-                <!-- Меню -->
-                <ul class="dropdown-menu">
-                    <li><a href="../folders/add.php">Создать папку</a></li>
-                    <li><a href="../materials/add.php">Создать документ</a></li>
-                </ul>
-            </div>
-            <a href="https://web.telegram.org/k/">Чат-бот</a>
-
-        </nav>
-
-        <div class="profile-inline">
-            <div class="prof_pic"></div>
-            <div class="hamburger" id="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-    </div>
-
-    <div class="mobile-nav" id="mobileNav">
-        <a href="../search/index.php">Поиск</a>
-        <a href="../folders/list.php">Материалы</a>
-        <div class="dropdown">
-                    <!-- Скрытый чекбокс -->
-                    <input type="checkbox" id="add-dropdown-mobile" class="dropdown-checkbox">
-                    <!-- Кнопка как label для чекбокса -->
-                    <label for="add-dropdown-mobile" class="dropdown-toggle">
-                        Создать
-                    </label>
-                    <!-- Меню -->
-                    <ul class="dropdown-menu">
-                        <li><a href="../folders/add.php">Создать папку</a></li>
-                        <li><a href="../materials/add.php">Создать документ</a></li>
-                    </ul>
-                </div>
-
-        <a href="https://web.telegram.org/k/">Чат-бот</a>
-
-    </div>
-</header>
+<body>
+    <?php require_once __DIR__ . '/../includes/header.php'; ?>
 
 
     <!-- Личный кабинет -->
     <div class="cabinet-content">
-        <h1 class="cabinet-greeting">Привет, <?= htmlspecialchars($display_name) ?>! 👋</h1>
-        <p style="font-size:18px; color:#666;">Добро пожаловать в личный кабинет</p>
         <link rel="stylesheet" href="../assets/css/cabinet.css">
-        <div class="cabinet-info">
-            <div class="info-block">
-                <div class="info-label">Логин</div>
-                <div class="info-value"><?= htmlspecialchars($username) ?></div>
-            </div>
-            <div class="info-block">
-                <div class="info-label">Роль</div>
-                <div class="info-value">Студент</div>
-            </div>
-            <div class="info-block">
-                <div class="info-label">Дата регистрации</div>
-                <div class="info-value">23.12.2025</div>
-            </div>
-            <div class="info-block">
-                <div class="info-label">Дней подряд</div>
-                <div class="info-value">7 Дней 🔥</div>
-            </div>
-        </div>
-
-        <div class="cabinet-actions">
-            <a href="../folders/list.php" class="btn btn-back">Перейти к материалам</a>
-            <a href="../auth/logout.php" class="btn btn-logout">Выйти из аккаунта</a>
+        
+        <h1 class="cabinet-name"><?= htmlspecialchars($display_name) ?></h1>
+        
+        <!-- Выбор аватара -->
+        <div class="avatar-selector-section">
+            <form method="POST" class="avatar-form">
+                <div class="avatar-grid">
+                    <?php foreach ($availableAvatars as $avatarFile): ?>
+                        <label class="avatar-option">
+                            <input type="radio" name="avatar" value="<?= htmlspecialchars($avatarFile) ?>" 
+                                   <?= ($current_avatar === $avatarFile) ? 'checked' : '' ?>>
+                            <div class="avatar-preview">
+                                <img src="../assets/avatars/<?= htmlspecialchars($avatarFile) ?>" 
+                                     alt="<?= htmlspecialchars(pathinfo($avatarFile, PATHINFO_FILENAME)) ?>">
+                            </div>
+                        </label>
+                    <?php endforeach; ?>
+                </div>
+                <div class="avatar-form-actions">
+                    <button type="submit" name="save_avatar" class="btn btn-save-avatar">Сохранить аватар</button>
+                    <a href="../auth/logout.php" class="btn btn-logout">Выйти</a>
+                </div>
+            </form>
         </div>
     </div>
+
 
 </body>
 </html>

@@ -3,7 +3,8 @@ CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    display_name VARCHAR(255) DEFAULT NULL
+    display_name VARCHAR(255) DEFAULT NULL,
+    avatar VARCHAR(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Создание таблицы типов материалов
@@ -18,6 +19,7 @@ CREATE TABLE IF NOT EXISTS folders (
     name VARCHAR(100) NOT NULL,
     user_id INT NOT NULL,
     tags TEXT DEFAULT NULL,
+    icon VARCHAR(50) DEFAULT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -45,18 +47,18 @@ INSERT INTO mat_types (name) VALUES
     ('Текстовый файл');
 
 -- Пользователи
-INSERT INTO users (username, password, display_name) VALUES
-    ('ivanivanov', 'password', 'Иван Иванов'),
-    ('mariapetrova', 'password', 'Мария Петрова'),
-    ('alexsidorov', 'password', 'Алексей Сидоров');
+INSERT INTO users (username, password, display_name, avatar) VALUES
+    ('ivanivanov', 'password', 'Иван Иванов', 'avatar1.svg'),
+    ('mariapetrova', 'password', 'Мария Петрова', 'avatar3.svg'),
+    ('alexsidorov', 'password', 'Алексей Сидоров', 'avatar2.svg');
 
 -- Папки
-INSERT INTO folders (name, user_id, tags) VALUES
-    ('Математика', 1, '#математика'),
-    ('Физика', 1, '#физика'),
-    ('Русский язык', 2, '#русский_язык'),
-    ('Литература', 2, '#литература'),
-    ('Программирование', 3, '#программирование');
+INSERT INTO folders (name, user_id, tags, icon) VALUES
+    ('Математика', 1, '#математика', 'math.svg'),
+    ('Физика', 1, '#физика', 'physics.svg'),
+    ('Русский язык', 2, '#русский_язык', 'language.svg'),
+    ('Литература', 2, '#литература', 'literature.svg'),
+    ('Программирование', 3, '#программирование', 'math.svg');
 
 -- Материалы
 INSERT INTO materials (name, type_id, content, folder_id, user_id, path, tags) VALUES

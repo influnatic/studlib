@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <a href="https://telegram.me/BotFather" target="_blank">
             <button type="button" class="register-btn">Регистрация через <br> Telegram-Бот</button>
         </a>
-        <p style="margin-top:20px; color:#888; font-size:14px; font-family:'Comfortaa', cursive;">
+        <p class="auth-footer-text">
             Материалы чат-бот поиск © 2025
         </p>
     </div>

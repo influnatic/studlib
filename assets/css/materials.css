@@ -52,74 +52,17 @@ body {
 }
 
 /* ===== Header ===== */
-.main-header {
-    width: 100%;
-    background-color: #CCA1F7;
-    padding: var(--space-s) var(--space-l);
-}
-
-.header-row {
-    max-width: 1600px;
-    width: 90%;
-    margin: 0 auto;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-s);
-}
-
-.header-title {
-    font-family: Zvezda;
-    font-size: var(--fs-h1);
-    font-style: italic;
-    font-weight: bold;
-    white-space: nowrap;
-}
-
-.header-nav {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-m);
-    font-family: Bulbasaur;
-    font-size: var(--fs-body);
-}
-
-.header-nav a {
-    text-decoration: none;
-    color: #2A2A2A;
-}
-
-.header-nav a:hover {
-    color: #77784E;
-}
-
-.profile-inline {
-    display: flex;
-    align-items: center;
-    gap: var(--space-s);
-    font-size: var(--fs-btn);
-}
-
-.prof_pic {
-    width: clamp(40px, 5vw, 56px);
-    height: clamp(40px, 5vw, 56px);
-    background-color: #F6F7A1;
-    border-radius: 50%;
-}
+/* Стили хедера перенесены в main.css для единообразия */
 
 /* ===== Main ===== */
-main {
-    max-width: 1600px;
-    width: 90%;
-    margin: var(--space-l) auto;
-    padding: var(--space-m);
-}
+/* Стили main перенесены в main.css для единообразия */
 
 .instruct {
     font-family: Bulbasaur;
-    font-size: var(--fs-h2);
-    margin-bottom: var(--space-m);
+    font-size: clamp(24px, 3vw, 36px);
+    margin-bottom: 16px;
+    margin-top: 8px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 }
 
 /* ===== Просмотр материала ===== */
@@ -128,59 +71,96 @@ section p strong {
 }
 
 section {
-    padding-top: var(--space-xs);
+    margin-bottom: 20px;
 }
 
-/* ===== ФОРМА ДОБАВЛЕНИЯ / РЕДАКТИРОВАНИЯ ===== */
-.material-form {
-    background-color: #F6F7A1;
-    border: 2px solid #B7B8A5;
-    border-radius: 32px;
-    padding: var(--space-l);
-    max-width: 1000px;
-    width: 90%;
-    margin: 0 auto var(--space-l) auto;
+section p {
+    margin: 4px 0;
+    font-size: 16px;
+    line-height: 1.5;
 }
 
-.material-form label {
+.material-edit-row,
+.material-view-row {
     display: flex;
-    flex-direction: column;
-    gap: var(--space-s);
-    margin-bottom: var(--space-l);
-    font-size: var(--fs-label);
+    align-items: center;
+    gap: 2px;
+}
+
+.material-edit-row strong,
+.material-view-row strong {
+    min-width: 140px;
+    flex-shrink: 0;
+}
+
+.material-edit-inline {
+    font-family: Comfortaa, sans-serif;
+    font-size: 16px;
     color: #2A2A2A;
+    border: 2px dashed #CCA1F7;
+    background: rgba(204, 161, 247, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 0;
+    transition: border-color 0.2s ease, background-color 0.2s ease, border-style 0.2s ease;
+    display: inline-block;
+    vertical-align: baseline;
 }
 
-.material-form input,
-.material-form textarea {
-    font-family: Comfortaa;
-    font-size: var(--fs-body);
-    padding: var(--space-s) var(--space-m);
-    border-radius: 18px;
-    border: 2px solid #B7B8A5;
-    background-color: #fff;
-    color: #2A2A2A;
-    width: 100%;
+input.material-edit-inline {
+    width: 450px;
 }
 
-.material-form textarea {
-    resize: vertical;
-    min-height: 200px;
+select.material-edit-inline {
+    width: 450px;
 }
 
-.material-form input:focus,
-.material-form textarea:focus {
+.material-edit-inline:hover {
+    border-style: solid;
+    background-color: rgba(204, 161, 247, 0.15);
+}
+
+.material-edit-inline:focus {
     outline: none;
     border-color: #CCA1F7;
+    border-style: solid;
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 0 2px rgba(204, 161, 247, 0.2);
 }
 
-/* ===== Кнопки формы ===== */
-.form-actions {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: var(--space-s);
-    margin-top: var(--space-m);
+.material-edit-inline select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%232A2A2A' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 4px center;
+    padding-right: 20px;
+    min-width: 150px;
+}
+
+.material-edit-inline[type="file"] {
+    cursor: pointer;
+    font-size: 14px;
+    padding: 4px 6px;
+    width: auto;
+    min-width: 200px;
+}
+
+.material-edit-inline[type="file"]::-webkit-file-upload-button {
+    font-family: Comfortaa;
+    font-size: 14px;
+    padding: 4px 12px;
+    border: none;
+    border-radius: 4px;
+    background-color: rgba(204, 161, 247, 0.2);
+    color: #2A2A2A;
+    cursor: pointer;
+    margin-right: 8px;
+    transition: background-color 0.2s ease;
+}
+
+.material-edit-inline[type="file"]::-webkit-file-upload-button:hover {
+    background-color: rgba(204, 161, 247, 0.3);
 }
 
 /* ===== Action Bar ===== */
@@ -188,22 +168,20 @@ section {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--space-s);
-    padding: var(--space-s) var(--space-m);
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(12px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-    max-width: 30%;
-    min-width: 200px;
-    margin: var(--space-m) auto;
     justify-content: center;
+    gap: 12px;
+    padding: 10px 16px;
+    margin: 30px auto 0;
+    border-radius: 30px;
+    background: #FFFFFF;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    width: fit-content;
 }
 
 /* ===== Buttons ===== */
 .action-btn {
-    width: clamp(32px, 4vw, 44px);
-    height: clamp(32px, 4vw, 44px);
+    width: 32px;
+    height: 32px;
     border: none;
     background: transparent;
     border-radius: 50%;
@@ -212,25 +190,55 @@ section {
     justify-content: center;
     cursor: pointer;
     position: relative;
-    transition: transform 0.25s ease;
+    transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
 .action-btn:hover {
-    transform: translateY(-4px);
+    transform: translateY(-1px);
     background: rgba(0,0,0,0.05);
 }
 
 .action-btn svg {
-    width: clamp(16px, 2vw, 22px);
-    height: clamp(16px, 2vw, 22px);
-    stroke: #555;
+    width: 18px;
+    height: 18px;
+    stroke: #2A2A2A;
+    fill: #2A2A2A;
+}
+
+.action-icon {
+    width: 18px;
+    height: 18px;
+    display: block;
+    object-fit: contain;
+}
+
+.action-btn.share .action-icon {
+    width: 16px;
+    height: 16px;
+}
+
+/* Кнопка "Добавить" с желтым кругом */
+.action-btn.add {
+    background: #F6F7A1;
+    width: 36px;
+    height: 36px;
+}
+
+.action-btn.add:hover {
+    background: #E4E590;
+    transform: translateY(-1px) scale(1.05);
+}
+
+.action-btn.add svg {
+    stroke: #2A2A2A;
+    fill: #2A2A2A;
 }
 
 .action-btn .tooltip {
     visibility: hidden;
     opacity: 0;
     position: absolute;
-    bottom: 120%;
+    bottom: calc(100% + 8px);
     left: 50%;
     transform: translateX(-50%);
     background: #2A2A2A;
@@ -239,6 +247,9 @@ section {
     border-radius: 8px;
     font-size: var(--fs-tooltip);
     white-space: nowrap;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+    z-index: 1001;
+    pointer-events: none;
 }
 
 .action-btn:hover .tooltip {
@@ -248,6 +259,18 @@ section {
 
 .action-btn.danger svg {
     stroke: #e04b4b;
+}
+
+.action-btn.danger .action-icon {
+    filter: brightness(0) saturate(100%) invert(40%) sepia(89%) saturate(1352%) hue-rotate(330deg) brightness(92%) contrast(89%);
+}
+
+/* Стили для ссылок в action-bar */
+.action-bar-compact a.action-btn {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 a {
@@ -262,149 +285,205 @@ a:hover {
 .material-text {
     max-height: 150px;
     overflow: hidden;
-    transition: max-height 0.3s ease;
-    padding: var(--space-s);
-    border-radius: 12px;
+    transition: max-height 0.3s ease, background-color 0.2s ease, border-color 0.2s ease;
+    padding: 16px;
+    border-radius: 16px;
     background-color: #F6F7A1;
-    border: 1px solid #ccc;
-    font-size: var(--fs-body);
+    border: 1px solid #E4E590;
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 12px;
+    cursor: pointer;
+    position: relative;
+}
+
+.material-text::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background: linear-gradient(to bottom, transparent, rgba(246, 247, 161, 0.95));
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.material-text.expanded::after {
+    opacity: 0;
+}
+
+.material-text:hover {
+    background-color: #E4E590;
+    border-color: #CCA1F7;
 }
 
 .material-text.expanded {
     max-height: 1000px;
 }
 
-.toggle-btn {
-    margin-top: var(--space-xs);
-    padding: var(--space-xs) var(--space-s);
-    font-family: Comfortaa;
-    font-size: var(--fs-btn);
-    background-color: #CCA1F7;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: background 0.25s ease;
+.attached-file-link {
+    margin-top: 12px;
+    text-align: left;
 }
 
-.toggle-btn:hover {
-    background-color: #b38de0;
-}
-
-.back-btn {
-    display: inline-block;
-    padding: var(--space-s) var(--space-m);
-    background-color: #CCA1F7;
-    color: #2A2A2A;
+.attached-file-link a {
+    font-size: 14px;
+    color: #666;
     text-decoration: none;
-    border-radius: 12px;
-    font-family: Comfortaa;
-    font-size: var(--fs-btn);
-    transition: background 0.25s ease;
+    transition: color 0.2s ease;
 }
 
-.back-btn:hover {
-    background-color: #B98AEF;
+.attached-file-link a:hover {
+    color: #CCA1F7;
 }
 
-.lift {
-    transition: transform 0.2s ease;
-}
+/* ===== Гамбургер и мобильное меню ===== */
+/* Стили перенесены в main.css для единообразия */
 
-.lift:hover {
-    transform: translateY(-2px);
-}
 
-.add {
-    background-color: #F6F7A1;
-}
-
-/* ===== Гамбургер ===== */
-.hamburger {
-    display: none; /* по умолчанию скрыт */
-    flex-direction: column;
-    justify-content: space-between;
-    width: 30px;
-    height: 22px;
-    cursor: pointer;
-}
-
-.hamburger span {
-    display: block;
-    height: 4px;
-    width: 100%;
-    background-color: #2A2A2A;
-    border-radius: 2px;
-    transition: all 0.3s ease;
-}
-
-/* ===== Анимация гамбургера в крестик ===== */
-.hamburger.active span:nth-child(1) {
-    transform: rotate(45deg) translate(5px, 5px);
-}
-
-.hamburger.active span:nth-child(2) {
-    opacity: 0;
-}
-
-.hamburger.active span:nth-child(3) {
-    transform: rotate(-45deg) translate(5px, -5px);
-}
-
-/* ===== Мобильное меню ===== */
-.mobile-nav {
-    display: none;
-    flex-direction: column;
-    gap: var(--space-s);
-    background-color: #CCA1F7;
-    padding: var(--space-s);
-    width: 100%;
-    text-align: center;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease;
-}
-
-.mobile-nav.show {
+/* ===== Выбор иконок ===== */
+.icon-selector {
     display: flex;
-    max-height: 300px; /* достаточно для всех пунктов */
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+    justify-content: center;
 }
 
-.mobile-nav a {
-    font-family: Bulbasaur;
-    font-size: var(--fs-body);
-    color: #2A2A2A;
-    text-decoration: none;
+.icon-option {
+    position: relative;
+    cursor: pointer;
 }
 
-.mobile-nav a:hover {
-    color: #77784E;
+.icon-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
 }
 
-/* ===== Адаптивные медиазапросы ===== */
-@media (max-width: 850px) {
-    .header-row { gap: var(--space-s); justify-content: center; }
-    .header-nav { font-size: clamp(18px, 3vw, 28px); gap: var(--space-s); }
-    .profile-inline { font-size: clamp(16px, 2.5vw, 24px); gap: var(--space-s); }
-    .instruct { font-size: clamp(28px, 4vw, 42px); }
-    .material-form { padding: var(--space-m); }
-    .form-actions { gap: var(--space-xs); }
-    .action-bar-compact { gap: var(--space-xs); padding: 8px 16px; }
-    .action-btn { width: 36px; height: 36px; }
-    .action-btn svg { width: 18px; height: 18px; }
+.icon-preview {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: #F6F7A1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
 }
 
-@media (max-width: 600px) {
-    .header-nav { flex-direction: column; gap: var(--space-xs); }
-    .header-title { text-align: center; width: 100%; }
-    .material-form { padding: var(--space-s); }
-    .action-btn { width: 32px; height: 32px; }
-    .action-btn svg { width: 16px; height: 16px; }
-    .tooltip { display: none; }
+.icon-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.icon-option input[type="radio"]:checked + .icon-preview {
+    border-color: #CCA1F7;
+    box-shadow: 0 2px 8px rgba(204, 161, 247, 0.4);
+    transform: scale(1.1);
+}
+
+.icon-option:hover .icon-preview {
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* ===== Адаптация для экранов ≤ 860px ===== */
-@media (max-width: 860px) {
-    .header-nav { display: none; }
-    .hamburger { display: flex; }
+/* Стили хедера в медиа-запросах перенесены в main.css для единообразия */
+
+/* ===== Классы для замены inline стилей ===== */
+.main-centered {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-centered {
+    width: 100%;
+}
+
+.error-message {
+    color: #e04b4b;
+    margin: 12px 0;
+    font-family: Comfortaa;
+    font-size: 16px;
+}
+
+.success-message {
+    color: #77784E;
+    margin: 12px 0;
+}
+
+.folder-info-wrapper {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(4px, 0.8vw, 8px);
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.folder-info-wrapper-horizontal {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.folder-actions-bottom {
+    margin-top: 24px;
+    justify-content: center;
+    gap: 12px;
+}
+
+.buttons-centered {
+    margin-top: 20px;
+    justify-content: center;
+}
+
+.material-card-yellow {
+    background-color: #F6F7A1;
+}
+
+.selectable-material {
+    background-color: #F6F7A1;
+    cursor: pointer;
+}
+
+.section-margin {
+    margin-bottom: 32px;
+}
+
+.svg-no-fill {
+    fill: none !important;
+}
+
+.cabinet-welcome-text {
+    font-size: 18px;
+    color: #666;
+}
+
+.auth-footer-text {
+    margin-top: 20px;
+    color: #888;
+    font-size: 14px;
+    font-family: 'Comfortaa', cursive;
+}
+
+.link-underlined {
+    color: #CCA1F7;
+    text-decoration: underline;
+}
+
+.svg-inline-icon {
+    margin-right: 6px;
+    vertical-align: middle;
 }
 
